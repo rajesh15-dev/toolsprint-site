@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ToolSprint – Advanced PDF Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --primary:#2563eb;
+  --bg:#f6f8fc;
+  --border:#e5e7eb;
+  --muted:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,system-ui;
+  background:var(--bg);
+  color:#0f172a;
+}
+.nav{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+}
+.brand{font-size:22px;font-weight:700}
+.brand span{color:var(--primary)}
+
+.container{max-width:1200px;margin:40px auto;padding:0 16px}
+h1{text-align:center;font-size:34px}
+.subtitle{text-align:center;color:var(--muted);margin-top:6px}
+
+/* tabs */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin:28px 0;
+  flex-wrap:wrap;
+}
+.tab{
+  padding:12px 26px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid var(--border);
+  font-weight:600;
+  cursor:pointer;
+}
+.tab.active{
+  background:var(--primary);
+  color:#fff;
+}
+
+/* box */
+.box{
+  display:none;
+  background:#fff;
+  border-radius:22px;
+  padding:28px;
+  border:1px solid var(--border);
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+.box.active{display:block}
+
+/* upload */
+.upload{
+  border:2px dashed #cbd5e1;
+  border-radius:18px;
+  padding:40px;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+}
+.upload:hover{background:#f9fafb}
+
+/* merge list */
+.file-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  margin-top:8px;
+  background:#f9fafb;
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+.file-item i{cursor:pointer;color:#ef4444}
+
+/* buttons */
+.btn{
+  margin-top:20px;
+  padding:14px 34px;
+  border:none;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+.btn.secondary{background:#10b981}
+.btn.danger{background:#ef4444}
+
+/* editor */
+.editor{
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:18px;
+  margin-top:24px;
+}
+canvas{
+  width:100%;
+  border-radius:16px;
+  border:1px solid var(--border);
+  cursor:crosshair;
+}
+.panel{
+  background:#f9fafb;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+.panel h3{font-size:15px;margin-bottom:8px}
+.panel label{font-size:13px;margin-top:12px;display:block}
+.panel input,.panel select{
+  width:100%;
+  margin-top:4px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+}
+
+/* tools */
+.tools{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.tool{
+  flex:1;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-size:13px;
+}
+.tool.active{background:var(--primary);color:#fff}
+
+.status{text-align:center;margin-top:14px;color:var(--muted)}
+.footer{text-align:center;margin:40px 0;color:var(--muted)}
+
+@media(max-width:900px){
+  .editor{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <div class="brand">Tool<span>Sprint</span></div>
+</div>
+
+<div class="container">
+  <h1>Advanced PDF Merge & Edit</h1>
+  <p class="subtitle">Professional PDF merge & editing – fast, smooth & free</p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('merge',this)">Merge PDF</div>
+    <div class="tab" onclick="switchTab('edit',this)">Edit PDF</div>
+  </div>
+
+  <!-- MERGE -->
+  <div class="box active" id="merge">
+    <div class="upload" onclick="mergeInput.click()">
+      <i class="fa-solid fa-cloud-arrow-up" style="font-size:40px;color:#94a3b8"></i>
+      <p>Click or drop multiple PDFs</p>
+      <input type="file" id="mergeInput" multiple accept="application/pdf" hidden>
+    </div>
+    <div id="mergeList"></div>
+    <button class="btn" onclick="mergePDFs()">Merge & Download</button>
+    <div class="status" id="mergeStatus"></div>
+  </div>
+
+  <!-- EDIT -->
+  <div class="box" id="edit">
+    <div class="upload" onclick="editInput.click()">
+      <i class="fa-solid fa-file-pdf" style="font-size:40px;color:#94a3b8"></i>
+      <p>Upload PDF to edit</p>
+      <input type="file" id="editInput" accept="application/pdf" hidden>
+    </div>
+
+    <div class="editor" id="editor" style="display:none">
+      <canvas id="pdfCanvas"></canvas>
+
+      <div class="panel">
+        <h3>Tools</h3>
+        <div class="tools">
+          <div class="tool active" onclick="setTool('text')" id="textTool">Text</div>
+          <div class="tool" onclick="setTool('box')" id="boxTool">Box</div>
+          <div class="tool" onclick="setTool('erase')" id="eraseTool">Erase</div>
+        </div>
+
+        <label>Text</label>
+        <input id="textValue" placeholder="Enter text">
+
+        <label>Font size</label>
+        <input type="number" id="fontSize" value="22">
+
+        <label>Color</label>
+        <input type="color" id="color" value="#ff0000">
+
+        <button class="btn secondary" onclick="addElement()">Add</button>
+        <button class="btn" onclick="undo()">Undo</button>
+        <button class="btn" onclick="exportPDF()">Export PDF</button>
+      </div>
+    </div>
+
+    <div class="status" id="editStatus"></div>
+  </div>
+</div>
+
+<div class="footer">© 2025 ToolSprint</div>
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+/* TAB */
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.box').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+/* ============ MERGE ============ */
+let mergeFiles=[];
+mergeInput.onchange=()=>{
+  mergeFiles=[...mergeInput.files];
+  mergeList.innerHTML='';
+  mergeFiles.forEach((f,i)=>{
+    mergeList.innerHTML+=`
+      <div class="file-item">
+        ${f.name}
+        <i class="fa-solid fa-trash" onclick="removeMerge(${i})"></i>
+      </div>`;
+  });
+};
+
+function removeMerge(i){
+  mergeFiles.splice(i,1);
+  mergeInput.onchange();
+}
+
+async function mergePDFs(){
+  if(mergeFiles.length<2){
+    mergeStatus.innerText="Select at least 2 PDFs";
+    return;
+  }
+  const merged=await PDFLib.PDFDocument.create();
+  for(const f of mergeFiles){
+    const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());
+    const pages=await merged.copyPages(pdf,pdf.getPageIndices());
+    pages.forEach(p=>merged.addPage(p));
+  }
+  download(await merged.save(),"merged.pdf");
+  mergeStatus.innerText="Merged successfully ✔";
+}
+
+/* ============ EDIT ============ */
+let canvas=document.getElementById("pdfCanvas"),
+ctx=canvas.getContext("2d"),
+pdfDoc=null,
+originalBytes=null,
+scale=1.4,
+elements=[],
+history=[],
+tool="text",
+clickX=50,clickY=50;
+
+editInput.onchange=loadPDF;
+
+async function loadPDF(){
+  const file=editInput.files[0];
+  if(!file) return;
+  originalBytes=await file.arrayBuffer();
+  pdfDoc=await pdfjsLib.getDocument(URL.createObjectURL(file)).promise;
+  const page=await pdfDoc.getPage(1);
+  const v=page.getViewport({scale});
+  canvas.width=v.width;
+  canvas.height=v.height;
+  await page.render({canvasContext:ctx,viewport:v}).promise;
+  editor.style.display="grid";
+  editStatus.innerText="Click to place or select elements";
+}
+
+canvas.onclick=e=>{
+  const r=canvas.getBoundingClientRect();
+  clickX=(e.clientX-r.left)/scale;
+  clickY=(e.clientY-r.top)/scale;
+
+  if(tool==="erase"){
+    eraseAt(clickX,clickY);
+  }
+};
+
+function setTool(t){
+  tool=t;
+  document.querySelectorAll('.tool').forEach(b=>b.classList.remove('active'));
+  document.getElementById(t+"Tool").classList.add('active');
+}
+
+function addElement(){
+  history.push(JSON.stringify(elements));
+  if(tool==="text"){
+    elements.push({
+      type:"text",
+      text:textValue.value,
+      x:clickX,y:clickY,
+      size:+fontSize.value,
+      color:color.value
+    });
+  }
+  if(tool==="box"){
+    elements.push({
+      type:"box",
+      x:clickX,y:clickY,
+      w:120,h:50,
+      color:color.value
+    });
+  }
+  redraw();
+}
+
+async function redraw(){
+  await loadPDF();
+  elements.forEach(el=>{
+    ctx.fillStyle=el.color;
+    if(el.type==="text"){
+      ctx.font=`${el.size*scale}px Inter`;
+      ctx.fillText(el.text,el.x*scale,el.y*scale);
+    }
+    if(el.type==="box"){
+      ctx.fillRect(el.x*scale,el.y*scale,el.w*scale,el.h*scale);
+    }
+  });
+}
+
+function eraseAt(x,y){
+  history.push(JSON.stringify(elements));
+  elements=elements.filter(el=>{
+    return Math.abs(el.x-x)>30 || Math.abs(el.y-y)>30;
+  });
+  redraw();
+}
+
+function undo(){
+  if(history.length){
+    elements=JSON.parse(history.pop());
+    redraw();
+  }
+}
+
+async function exportPDF(){
+  const pdf=await PDFLib.PDFDocument.load(originalBytes);
+  const page=pdf.getPage(0);
+
+  elements.forEach(el=>{
+    if(el.type==="text"){
+      page.drawText(el.text,{
+        x:el.x,
+        y:page.getHeight()-el.y,
+        size:el.size
+      });
+    }
+    if(el.type==="box"){
+      page.drawRectangle({
+        x:el.x,
+        y:page.getHeight()-el.y-el.h,
+        width:el.w,
+        height:el.h
+      });
+    }
+  });
+
+  download(await pdf.save(),"edited.pdf");
+}
+
+/* DOWNLOAD */
+function download(bytes,name){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+  a.download=name;
+  a.click();
+}
+</script>
+
+</body>
+</html>

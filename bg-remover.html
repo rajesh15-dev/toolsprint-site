@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Background Changer – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: system-ui,-apple-system,BlinkMacSystemFont;
+  background:linear-gradient(180deg,#eef2f7,#e3e9f2);
+  color:#1f2937;
+}
+
+/* TOP BAR */
+.topbar{
+  background:linear-gradient(90deg,#0b1020,#1e1b4b,#312e81);
+  color:#fff;
+  padding:18px 30px;
+  box-shadow:0 8px 30px rgba(0,0,0,.35);
+}
+.topbar h1{font-size:21px;font-weight:600}
+.topbar p{font-size:13px;color:#c7d2fe;margin-top:4px}
+
+/* CONTAINER */
+.container{
+  max-width:1180px;
+  margin:55px auto;
+  padding:0 22px;
+}
+
+/* MAIN CARD */
+.card{
+  background:linear-gradient(180deg,#ffffff,#f7f9fc);
+  border-radius:22px;
+  padding:48px;
+  display:grid;
+  grid-template-columns:1.25fr 1fr;
+  gap:42px;
+  box-shadow:0 50px 90px rgba(0,0,0,.10);
+}
+@media(max-width:900px){
+  .card{grid-template-columns:1fr}
+}
+
+.left h2{font-size:34px;margin-bottom:16px}
+.left p{
+  color:#4b5563;
+  line-height:1.75;
+  max-width:540px;
+}
+.cta{
+  margin-top:30px;
+  padding:17px 42px;
+  font-size:16px;
+  border-radius:34px;
+  border:none;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 14px 36px rgba(37,99,235,.45);
+  transition:.25s;
+}
+.cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 22px 50px rgba(37,99,235,.55);
+}
+
+/* PREVIEW */
+.preview{
+  background:linear-gradient(180deg,#eef2f7,#e1e7ef);
+  border-radius:20px;
+  padding:22px;
+}
+.preview-box{
+  position:relative;
+  height:210px;
+  border-radius:16px;
+  overflow:hidden;
+  background:linear-gradient(120deg,#cfd8e3,#dbe3ed);
+}
+.bg{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,#9ca3af,#cbd5e1);
+  animation:bgFade 3s infinite alternate;
+}
+@keyframes bgFade{from{opacity:.9}to{opacity:.4}}
+
+.person{
+  position:absolute;
+  left:50%;
+  top:55%;
+  transform:translate(-50%,-50%);
+  width:85px;
+  height:135px;
+  border-radius:45px 45px 35px 35px;
+  background:#111827;
+}
+.person::before{
+  content:"";
+  position:absolute;
+  top:-38px;
+  left:50%;
+  transform:translateX(-50%);
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#111827;
+}
+.edge{
+  position:absolute;
+  inset:0;
+  border:2px dashed rgba(37,99,235,.6);
+  border-radius:16px;
+  animation:edgePulse 1.6s infinite;
+}
+@keyframes edgePulse{0%{opacity:.2}50%{opacity:.8}100%{opacity:.2}}
+
+.scan{
+  position:absolute;
+  left:0;right:0;
+  height:6px;
+  background:linear-gradient(90deg,transparent,#60a5fa,transparent);
+  animation:scanMove 2.2s infinite;
+}
+@keyframes scanMove{from{top:-10%}to{top:110%}}
+
+.preview-text{
+  margin-top:16px;
+  font-size:14px;
+  color:#475569;
+}
+
+/* PROCESS */
+.process{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top,#ffffff,#e8edf5);
+  z-index:9999;
+  opacity:0;
+  transition:.2s;
+}
+.process-inner{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.spinner{
+  width:78px;height:78px;
+  border:3px solid #e5e7eb;
+  border-top:3px solid #2563eb;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 30px;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <h1>ToolSprint • Background Changer</h1>
+  <p>Fast & free background removal workflow</p>
+</div>
+
+<div class="container">
+  <div class="card">
+
+    <div class="left">
+      <h2>Change Image Background Instantly</h2>
+      <p>
+        Upload your photo and remove background in seconds using a
+        guided processing workflow. No signup. No limits.
+      </p>
+      <button class="cta" onclick="startFlow()">Start Background Changer</button>
+    </div>
+
+    <div class="preview">
+      <div class="preview-box">
+        <div class="bg"></div>
+        <div class="person"></div>
+        <div class="edge"></div>
+        <div class="scan"></div>
+      </div>
+      <div class="preview-text">
+        Free • Fast • No watermark
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="process" id="process">
+  <div class="process-inner">
+    <div class="spinner"></div>
+    <h3>Opening background remover…</h3>
+  </div>
+</div>
+
+<script>
+function startFlow(){
+  const p=document.getElementById("process");
+  p.style.display="block";
+  requestAnimationFrame(()=>p.style.opacity="1");
+  setTimeout(()=>{
+    window.location.href="https://www.remove.bg/upload";
+  },180);
+}
+</script>
+
+</body>
+</html>

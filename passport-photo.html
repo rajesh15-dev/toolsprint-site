@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Passport Photo Maker – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* ===== GLOBAL ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #1f2937;
+  overflow-x: hidden;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 20px 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.topbar h1 {
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.topbar h1 i {
+  margin-right: 10px;
+  color: #ffd700;
+}
+.topbar p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 30px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 50px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: 1fr;
+    padding: 40px;
+  }
+}
+
+/* LEFT */
+.left h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.left p {
+  color: #6b7280;
+  line-height: 1.8;
+  max-width: 550px;
+  font-size: 18px;
+}
+.cta {
+  margin-top: 40px;
+  padding: 18px 50px;
+  font-size: 18px;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(22, 163, 74, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+.cta:hover::before {
+  left: 100%;
+}
+.cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(22, 163, 74, 0.5);
+}
+.cta i {
+  margin-left: 10px;
+}
+
+/* RIGHT – PASSPORT PREVIEW DEMO */
+.preview {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.preview::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 25px;
+  z-index: -1;
+  opacity: 0.1;
+}
+.preview-box {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f1f5f9;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* white background */
+.preview-box .bg {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+}
+
+/* face silhouette with animation */
+.preview-box .face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 100px;
+  border-radius: 40px 40px 35px 35px;
+  background: #374151;
+  animation: float 3s ease-in-out infinite;
+}
+.preview-box .face::before {
+  content: "";
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #374151;
+}
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+/* crop frame with glow */
+.preview-box .frame {
+  position: absolute;
+  inset: 20px;
+  border: 3px dashed #22c55e;
+  border-radius: 12px;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.preview-text {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #475569;
+  text-align: center;
+  font-weight: 500;
+}
+.preview-text i {
+  margin-right: 8px;
+  color: #22c55e;
+}
+
+/* ===== PROCESS OVERLAY ===== */
+.process {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.process-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #16a34a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30px;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+.process h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.process p {
+  margin-top: 15px;
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 15px 20px;
+  }
+  .topbar h1 {
+    font-size: 20px;
+  }
+  .container {
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .card {
+    padding: 30px;
+  }
+  .left h2 {
+    font-size: 32px;
+  }
+  .left p {
+    font-size: 16px;
+  }
+  .cta {
+    padding: 15px 40px;
+    font-size: 16px;
+  }
+  .preview-box {
+    height: 200px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <h1><i class="fas fa-passport"></i>ToolSprint • Passport Photo</h1>
+  <p>Official passport photo preparation workflow</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+
+    <div class="left">
+      <h2>Create Passport Photo Instantly</h2>
+      <p>
+        Guided passport photo creation with correct size, alignment, and background requirements. Get professional results in seconds with our advanced AI-powered tool.
+      </p>
+
+      <button class="cta" onclick="startPassport()">
+        Create Passport Photo <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <div class="preview">
+      <div class="preview-box">
+        <div class="bg"></div>
+        <div class="face"></div>
+        <div class="frame"></div>
+      </div>
+      <div class="preview-text">
+        <i class="fas fa-check-circle"></i>Face alignment • <i class="fas fa-check-circle"></i>White background • <i class="fas fa-check-circle"></i>Official framing
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="process" id="process">
+  <div class="process-inner">
+    <div class="spinner"></div>
+    <h3>Preparing Passport Photo</h3>
+    <p>
+      Detecting face…<br>
+      Adjusting size & alignment…<br>
+      Opening passport workspace…
+    </p>
+  </div>
+</div>
+
+<script>
+function startPassport() {
+  const p = document.getElementById("process");
+  p.style.display = "block";
+  requestAnimationFrame(() => { p.style.opacity = "1"; });
+
+  setTimeout(() => {
+    window.location.href = "https://www.idphoto4you.com/";
+  }, 2000);
+}
+</script>
+
+</body>
+</html>

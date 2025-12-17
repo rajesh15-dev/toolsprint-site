@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ToolSprint – PDF & Image Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free online tools to compress PDFs, convert images to PDF, edit documents and build resumes. Perfect for forms, college and daily work.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,system-ui;
+  background:#f6f8fc;
+  color:#0f172a;
+}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav{
+  background:#ffffff;
+  border-bottom:1px solid #e5e7eb;
+  padding:14px 18px;
+}
+.brand{font-size:22px;font-weight:700}
+.brand span{color:#2563eb}
+
+/* HERO */
+.hero{
+  max-width:1100px;
+  margin:42px auto 64px;
+  padding:0 18px;
+  text-align:center;
+}
+.hero h1{font-size:34px;line-height:1.25}
+.hero p{
+  margin-top:14px;
+  color:#64748b;
+  font-size:16px;
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* SECTION */
+.section{
+  max-width:1100px;
+  margin:70px auto;
+  padding:0 18px;
+}
+.section h2{
+  font-size:28px;
+  text-align:center;
+  margin-bottom:8px;
+}
+.section p{
+  text-align:center;
+  color:#64748b;
+  margin-bottom:30px;
+  font-size:15px;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:22px;
+}
+
+/* TOOL CARD */
+.card{
+  background:#ffffff;
+  padding:26px;
+  border-radius:18px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 10px 24px rgba(0,0,0,.06);
+  transition:.25s;
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 22px 44px rgba(15,23,42,.12);
+  border-color:#c7d2fe;
+}
+.icon{font-size:34px;margin-bottom:10px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:14px;color:#64748b;line-height:1.5}
+.card a{
+  display:inline-block;
+  margin-top:14px;
+  color:#2563eb;
+  font-weight:600;
+  font-size:14px;
+}
+
+/* SUPPORT */
+.support-box{
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:26px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.support-btn{
+  display:inline-block;
+  margin-top:14px;
+  padding:14px 34px;
+  border-radius:999px;
+  background:#16a34a;
+  color:#ffffff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ===== COLLEGE SERVICE – SMOOTH WHATSAPP STYLE ===== */
+.services{
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:22px;
+  padding:42px 18px;
+}
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+.wa-card{
+  display:block;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  padding:22px;
+  transition:.25s ease;
+}
+.wa-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 36px rgba(15,23,42,.12);
+  border-color:#c7d2fe;
+}
+.wa-card h3{
+  font-size:17px;
+  margin-bottom:6px;
+}
+.wa-card p{
+  font-size:14px;
+  color:#475569;
+}
+.wa-action{
+  margin-top:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:14px;
+  font-weight:600;
+  color:#2563eb;
+}
+.wa-dot{
+  width:6px;
+  height:6px;
+  background:#ef4444;
+  border-radius:50%;
+}
+
+/* FOOTER */
+footer{
+  padding:30px 18px;
+  text-align:center;
+  font-size:14px;
+  color:#64748b;
+  background:#f8fafc;
+}
+footer a{color:#2563eb;font-weight:600}
+
+/* PC UPI POPUP */
+#upiPopup{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+}
+#upiPopup .box{
+  background:#ffffff;
+  padding:26px;
+  border-radius:18px;
+  max-width:320px;
+  width:90%;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <div class="brand">Tool<span>Sprint</span></div>
+</div>
+
+<div class="hero">
+  <h1>Compress, Convert & Edit PDF and Images Instantly</h1>
+  <p>
+    Free online tools to reduce file size, convert images to PDF,
+    edit documents and create resumes — perfect for forms,
+    college and daily work.
+  </p>
+</div>
+
+<!-- TOOLS -->
+<div class="section">
+  <h2>Popular Online Tools</h2>
+  <p>Used daily by students and professionals</p>
+
+  <div class="grid">
+    <div class="card"><div class="icon">📉</div><h3>Image & PDF Compress</h3><a href="Tools/compress-center.html">Open tool →</a></div>
+    <div class="card"><div class="icon">🖼️</div><h3>Image to PDF</h3><a href="Tools/image-to-pdf.html">Open tool →</a></div>
+    <div class="card"><div class="icon">📐</div><h3>Image Resize</h3><a href="Tools/image-resize.html">Open tool →</a></div>
+    <div class="card"><div class="icon">🧩</div><h3>PDF Merge & Edit</h3><a href="Tools/pdf-merge.html">Open tool →</a></div>
+    <div class="card"><div class="icon">📄</div><h3>PDF to Word</h3><a href="Tools/pdf-to-word.html">Open tool →</a></div>
+    <div class="card"><div class="icon">🎨</div><h3>Background Remover</h3><a href="Tools/bg-remover.html">Open tool →</a></div>
+    <div class="card"><div class="icon">📸</div><h3>Passport Photo Maker</h3><a href="Tools/passport-photo.html">Open tool →</a></div>
+    <div class="card"><div class="icon">📝</div><h3>Resume Builder</h3><a href="Tools/resume-builder.html">Open tool →</a></div>
+  </div>
+</div>
+
+<!-- SUPPORT -->
+<div class="section">
+  <h2>Support ToolSprint ❤️</h2>
+  <p>If these free tools helped you, you can support us to keep everything free.</p>
+
+  <div class="support-box">
+    <div class="support-btn" onclick="supportUPI()">Support via UPI</div>
+    <p style="font-size:13px;color:#64748b;margin-top:12px">
+      One-time • Optional • Any amount
+    </p>
+  </div>
+</div>
+
+<!-- COLLEGE SERVICES (FIXED) -->
+<div class="section">
+  <h2>College Project Services</h2>
+  <p>Click & chat directly on WhatsApp</p>
+
+  <div class="services">
+    <div class="service-grid">
+
+      <a class="wa-card"
+         href="https://wa.me/918293342195?text=Hello%20ToolSprint%2C%20I%20need%20AI%20Innovative%20Project%20details."
+         target="_blank">
+        <h3>🤖 AI Innovative Project</h3>
+        <p>Project • Report • PPT • Explanation</p>
+        <div class="wa-action"><span class="wa-dot"></span> Connect on WhatsApp</div>
+      </a>
+
+      <a class="wa-card"
+         href="https://wa.me/918293342195?text=Hello%20ToolSprint%2C%20I%20need%20Non-AI%20College%20Project."
+         target="_blank">
+        <h3>💡 Non-AI Project</h3>
+        <p>Final year & semester projects</p>
+        <div class="wa-action"><span class="wa-dot"></span> Connect on WhatsApp</div>
+      </a>
+
+      <a class="wa-card"
+         href="https://wa.me/918293342195?text=Hello%20ToolSprint%2C%20I%20need%20College%20CV%20or%20Resume."
+         target="_blank">
+        <h3>📋 College CV / Resume</h3>
+        <p>ATS-friendly resume for placement</p>
+        <div class="wa-action"><span class="wa-dot"></span> Connect on WhatsApp</div>
+      </a>
+
+      <a class="wa-card"
+         href="https://wa.me/918293342195?text=Hello%20ToolSprint%2C%20I%20need%20Project%20PPT."
+         target="_blank">
+        <h3>📊 Project PPT</h3>
+        <p>Professional & viva-ready slides</p>
+        <div class="wa-action"><span class="wa-dot"></span> Connect on WhatsApp</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2025 ToolSprint • Developed by <strong>Rajesh</strong><br>
+  <a href="https://www.linkedin.com/in/rajesh-mondal-766742397" target="_blank">LinkedIn</a> |
+  <a href="mailto:rajeshmondal81010@gmail.com">Email</a>
+</footer>
+
+<!-- PC UPI POPUP -->
+<div id="upiPopup">
+  <div class="box">
+    <h3>Support ToolSprint ❤️</h3>
+    <p style="margin:10px 0;color:#475569">Pay using any UPI app</p>
+    <p style="font-weight:700;font-size:18px">souvik767908@okaxis</p>
+    <button onclick="closeUPI()" style="margin-top:14px;padding:8px 20px">Close</button>
+  </div>
+</div>
+
+<script>
+function supportUPI(){
+  if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
+    window.location.href="upi://pay?pa=souvik767908@okaxis&pn=ToolSprint&cu=INR";
+  }else{
+    document.getElementById("upiPopup").style.display="flex";
+  }
+}
+function closeUPI(){
+  document.getElementById("upiPopup").style.display="none";
+}
+</script>
+
+</body>
+</html>

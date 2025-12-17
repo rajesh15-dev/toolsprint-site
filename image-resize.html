@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Resize – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Resize images for passport, government forms and college submissions. Preview before download.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:#2563eb;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --text:#0f172a;
+  --muted:#64748b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,system-ui;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAV */
+.nav{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 18px;
+}
+.brand{
+  font-size:22px;
+  font-weight:700;
+}
+.brand span{color:var(--blue)}
+
+/* LAYOUT */
+.container{
+  max-width:1000px;
+  margin:36px auto 60px;
+  padding:0 16px;
+}
+h1{text-align:center;font-size:30px}
+.subtitle{
+  text-align:center;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:15px;
+}
+
+/* CARD */
+.card{
+  margin-top:32px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:26px;
+  box-shadow:0 30px 60px rgba(15,23,42,.12);
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+}
+
+/* PREVIEW */
+.preview{
+  background:#f8fafc;
+  border:1px dashed #c7d2fe;
+  border-radius:18px;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:260px;
+}
+.preview img{
+  max-width:100%;
+  max-height:240px;
+  border-radius:12px;
+}
+
+/* CONTROLS */
+input[type=file]{width:100%}
+
+.presets{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+.preset{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:#f8fafc;
+  font-size:13px;
+  cursor:pointer;
+}
+.preset:hover{border-color:#c7d2fe}
+
+.fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:16px;
+}
+label{
+  font-size:13px;
+  font-weight:600;
+}
+input[type=number], input[type=range]{
+  width:100%;
+  margin-top:6px;
+}
+.lock{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* BUTTON */
+.action{
+  margin-top:22px;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 14px 30px rgba(37,99,235,.45);
+}
+button:active{transform:scale(.98)}
+
+.status{
+  margin-top:12px;
+  font-size:14px;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <div class="brand">Tool<span>Sprint</span></div>
+</div>
+
+<div class="container">
+  <h1>Image Resize</h1>
+  <p class="subtitle">Passport • Government forms • College uploads</p>
+
+  <div class="card">
+    <div class="grid">
+
+      <!-- LEFT -->
+      <div>
+        <input type="file" id="file" accept="image/*">
+
+        <div class="presets">
+          <div class="preset" onclick="preset(200,200)">200×200 (Govt)</div>
+          <div class="preset" onclick="preset(300,300)">300×300</div>
+          <div class="preset" onclick="preset(413,531)">Passport (India)</div>
+          <div class="preset" onclick="preset(600,600)">College</div>
+        </div>
+
+        <div class="fields">
+          <div>
+            <label>Width (px)</label>
+            <input type="number" id="w">
+          </div>
+          <div>
+            <label>Height (px)</label>
+            <input type="number" id="h">
+          </div>
+        </div>
+
+        <div class="lock">
+          <input type="checkbox" id="lock" checked>
+          Maintain aspect ratio
+        </div>
+
+        <label style="margin-top:14px;font-size:13px;font-weight:600">
+          Quality (KB / MB control)
+        </label>
+        <input type="range" id="quality" min="40" max="95" value="85">
+
+        <div class="action">
+          <button onclick="resize()">Resize & Download</button>
+        </div>
+
+        <div class="status" id="status"></div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="preview">
+        <img id="preview" alt="Preview">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+let img=new Image();
+let ratio=1;
+
+document.getElementById("file").addEventListener("change",e=>{
+  const f=e.target.files[0];
+  if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    img.onload=()=>{
+      ratio=img.width/img.height;
+      document.getElementById("preview").src=ev.target.result;
+    };
+    img.src=ev.target.result;
+  };
+  r.readAsDataURL(f);
+});
+
+function preset(w,h){
+  document.getElementById("w").value=w;
+  document.getElementById("h").value=h;
+}
+
+document.getElementById("w").addEventListener("input",syncH);
+document.getElementById("h").addEventListener("input",syncW);
+
+function syncH(){
+  if(!document.getElementById("lock").checked) return;
+  document.getElementById("h").value=Math.round(this.value/ratio);
+}
+function syncW(){
+  if(!document.getElementById("lock").checked) return;
+  document.getElementById("w").value=Math.round(this.value*ratio);
+}
+
+function resize(){
+  const f=document.getElementById("file").files[0];
+  const w=+document.getElementById("w").value;
+  const h=+document.getElementById("h").value;
+  const q=document.getElementById("quality").value/100;
+  const s=document.getElementById("status");
+  if(!f||!w||!h){s.innerText="Upload image & set size";return}
+
+  const c=document.createElement("canvas");
+  c.width=w; c.height=h;
+  c.getContext("2d").drawImage(img,0,0,w,h);
+
+  c.toBlob(b=>{
+    const before=(f.size/1024).toFixed(0);
+    const after=(b.size/1024).toFixed(0);
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(b);
+    a.download="resized-image.jpg";
+    a.click();
+    s.innerText=`Done ✔ ${before}KB → ${after}KB`;
+  },"image/jpeg",q);
+}
+</script>
+
+</body>
+</html>

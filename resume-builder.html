@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resume Builder – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,system-ui;
+  background:#f5f7fb;
+  color:#0f172a;
+}
+
+/* NAV */
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid #e5e7eb;
+}
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+}
+.brand{font-size:20px;font-weight:600}
+.brand span{color:#2563eb}
+.nav-tag{font-size:13px;color:#64748b}
+
+/* PAGE */
+.wrapper{
+  max-width:1200px;
+  margin:60px auto;
+  padding:0 24px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:28px;
+  padding:60px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:48px;
+  box-shadow:0 40px 80px rgba(15,23,42,.12);
+}
+@media(max-width:900px){
+  .card{grid-template-columns:1fr;padding:36px}
+}
+
+/* LEFT */
+.left h1{
+  font-size:38px;
+  margin-bottom:16px;
+}
+.left p{
+  color:#475569;
+  line-height:1.7;
+  max-width:520px;
+}
+.cta{
+  margin-top:32px;
+  padding:18px 46px;
+  border-radius:999px;
+  border:none;
+  background:#16a34a;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 20px 40px rgba(22,163,74,.45);
+  transition:.25s;
+}
+.cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 30px 60px rgba(22,163,74,.55);
+}
+
+/* PREVIEW */
+.preview{
+  background:#f1f5f9;
+  border-radius:22px;
+  padding:26px;
+}
+.preview-box{
+  position:relative;
+  height:260px;
+  background:#fff;
+  border-radius:18px;
+  padding:22px;
+  overflow:hidden;
+}
+.resume-line{
+  height:10px;
+  background:#e5e7eb;
+  border-radius:6px;
+  margin-bottom:10px;
+}
+.resume-line.dark{background:#cbd5e1}
+.resume-line.short{width:60%}
+.resume-line.medium{width:80%}
+
+/* scan animation */
+.scan{
+  position:absolute;
+  left:0;right:0;
+  height:6px;
+  background:linear-gradient(90deg,transparent,#86efac,transparent);
+  animation:scan 2.4s infinite;
+}
+@keyframes scan{
+  from{top:-10%}
+  to{top:110%}
+}
+
+.preview-note{
+  margin-top:18px;
+  font-size:14px;
+  color:#64748b;
+}
+
+/* PROCESS */
+.process{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#ffffff;
+  z-index:9999;
+  opacity:0;
+  transition:.2s;
+}
+.process-inner{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.spinner{
+  width:84px;
+  height:84px;
+  border:3px solid #e5e7eb;
+  border-top:3px solid #16a34a;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 32px;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.process h2{font-size:22px;font-weight:600}
+.process p{margin-top:12px;color:#64748b;font-size:15px}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="nav-inner">
+    <div class="brand">Tool<span>Sprint</span></div>
+    <div class="nav-tag">Resume Builder</div>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="card">
+
+    <div class="left">
+      <h1>Create a Professional Resume</h1>
+      <p>
+        Build a modern, job-ready resume using a simple and guided
+        resume builder. No signup. No limits. Completely free.
+      </p>
+      <button class="cta" onclick="startResume()">
+        Start Resume Builder
+      </button>
+    </div>
+
+    <div class="preview">
+      <div class="preview-box">
+        <div class="resume-line dark"></div>
+        <div class="resume-line medium"></div>
+        <div class="resume-line short"></div>
+        <div class="resume-line"></div>
+        <div class="resume-line medium"></div>
+        <div class="resume-line short"></div>
+        <div class="scan"></div>
+      </div>
+      <div class="preview-note">
+        ATS-friendly • Clean layout • Easy editing
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="process" id="process">
+  <div class="process-inner">
+    <div class="spinner"></div>
+    <h2>Launching Resume Builder</h2>
+    <p>Setting up editor workspace…</p>
+  </div>
+</div>
+
+<script>
+function startResume(){
+  const p=document.getElementById("process");
+  p.style.display="block";
+  requestAnimationFrame(()=>{p.style.opacity="1"});
+
+  setTimeout(()=>{
+    window.location.href="https://www.resume.com/builder";
+  },1200);
+}
+</script>
+
+</body>
+</html>

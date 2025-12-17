@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Compress Files – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Compress images and PDFs instantly with ToolSprint. Reduce file sizes for easy uploads and sharing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --bg: #ffffff;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --success: #10b981;
+  --error: #ef4444;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* TOP BAR */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 16px 20px;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--blue);
+}
+.brand span {
+  color: var(--blue-dark);
+}
+.back-btn {
+  padding: 8px 16px;
+  background: #f1f5f9;
+  color: var(--muted);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.back-btn:hover {
+  background: #e2e8f0;
+}
+
+/* LAYOUT */
+.container {
+  max-width: 1000px;
+  margin: 40px auto 80px;
+  padding: 0 20px;
+}
+@media (max-width: 768px) {
+  .container {
+    margin: 20px auto 60px;
+    padding: 0 16px;
+  }
+}
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
+}
+.subtitle {
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 400;
+}
+@media (max-width: 768px) {
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+}
+
+/* CARD */
+.card {
+  margin-bottom: 32px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUp 0.5s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  .card {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+}
+.card h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .card h2 {
+    font-size: 20px;
+  }
+}
+.card p {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+/* INPUT */
+.file-input {
+  margin-bottom: 24px;
+}
+.file-input label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.file-input input[type="file"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: #f8fafc;
+  font-size: 14px;
+  color: var(--muted);
+  transition: border-color 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+}
+.file-input input[type="file"]:hover {
+  border-color: var(--blue);
+  background: #f0f9ff;
+}
+.file-input input[type="file"]:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* RANGE */
+.range {
+  margin-bottom: 24px;
+}
+.range label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.range-container {
+  position: relative;
+}
+.range input {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+.range input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--blue);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  transition: transform 0.2s ease;
+}
+.range input::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+.range input::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--blue);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+.range-value {
+  position: absolute;
+  top: -25px;
+  right: 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* BUTTON */
+.action {
+  text-align: center;
+}
+button {
+  padding: 16px 48px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 200px;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+button:active {
+  transform: scale(0.98);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+@media (max-width: 768px) {
+  button {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* STATUS */
+.status {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  min-height: 20px;
+  font-weight: 500;
+}
+.status.success {
+  color: var(--success);
+}
+.status.error {
+  color: var(--error);
+}
+.status.loading {
+  color: var(--blue);
+}
+
+/* NOTE */
+.note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* LOADING SPINNER */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="back-btn" href="index.html">← Back to Tools</a>
+    <div class="brand">Tool<span>Sprint</span></div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Compress Files 🗜️</h1>
+  <p class="subtitle">Reduce file sizes instantly for forms, uploads & sharing. Fast, secure & free!</p>
+
+  <!-- IMAGE -->
+  <div class="card">
+    <h2>🖼️ Image Compress</h2>
+    <p>JPG / PNG → smaller size (MB → KB). Perfect for web uploads & documents.</p>
+
+    <div class="file-input">
+      <label for="imgFile">Select Image File</label>
+      <input type="file" id="imgFile" accept="image/*">
+    </div>
+
+    <div class="range">
+      <label for="imgQuality">Quality Level</label>
+      <div class="range-container">
+        <input type="range" id="imgQuality" min="15" max="90" value="70">
+        <span class="range-value" id="imgQualityValue">70%</span>
+      </div>
+    </div>
+
+    <div class="action">
+      <button id="imgBtn" onclick="compressImage()">Compress Image ✨</button>
+    </div>
+
+    <div class="status" id="imgStatus"></div>
+  </div>
+
+  <!-- PDF -->
+  <div class="card">
+    <h2>📄 PDF Compress</h2>
+    <p>Best for scanned PDFs, forms & online submissions. Maintains readability.</p>
+
+    <div class="file-input">
+      <label for="pdfFile">Select PDF File</label>
+      <input type="file" id="pdfFile" accept="application/pdf">
+    </div>
+
+    <div class="range">
+      <label for="pdfScale">Compression Strength</label>
+      <div class="range-container">
+        <input type="range" id="pdfScale" min="60" max="95" value="80">
+        <span class="range-value" id="pdfScaleValue">80%</span>
+      </div>
+    </div>
+
+    <div class="action">
+      <button id="pdfBtn" onclick="compressPDF()">Compress PDF ✨</button>
+    </div>
+
+    <div class="status" id="pdfStatus"></div>
+    <div class="note">
+      💡 Text-only PDFs may show less size reduction. Scanned documents compress best!
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<script>
+/* Update range values */
+document.getElementById('imgQuality').addEventListener('input', function() {
+  document.getElementById('imgQualityValue').textContent = this.value + '%';
+});
+document.getElementById('pdfScale').addEventListener('input', function() {
+  document.getElementById('pdfScaleValue').textContent = this.value + '%';
+});
+
+/* IMAGE */
+async function compressImage() {
+  const f = document.getElementById("imgFile").files[0];
+  const q = document.getElementById("imgQuality").value / 100;
+  const s = document.getElementById("imgStatus");
+  const btn = document.getElementById("imgBtn");
+  
+  if (!f) {
+    s.innerText = "❌ Please select an image file first.";
+    s.className = "status error";
+    return;
+  }
+
+  s.innerHTML = '<span class="spinner"></span>Compressing image...';
+  s.className = "status loading";
+  btn.disabled = true;
+  btn.innerHTML = "Processing...";
+
+  try {
+    const r = new FileReader();
+    r.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement("canvas");
+        c.width = img.width;
+        c.height = img.height;
+        c.getContext("2d").drawImage(img, 0, 0);
+        c.toBlob(b => {
+          const before = (f.size / 1024).toFixed(0);
+          const after = (b.size / 1024).toFixed(0);
+          download(b, "compressed-image.jpg");
+          s.innerHTML = `✅ Done! ${before}KB → ${after}KB (Saved ${((before - after) / before * 100).toFixed(0)}%)`;
+          s.className = "status success";
+          btn.disabled = false;
+          btn.innerHTML = "Compress Image ✨";
+        }, "image/jpeg", q);
+      };
+      img.src = e.target.result;
+    };
+    r.readAsDataURL(f);
+  } catch (error) {
+    s.innerText = "❌ Error compressing image. Please try again.";
+    s.className = "status error";
+    btn.disabled = false;
+    btn.innerHTML = "Compress Image ✨";
+  }
+}
+
+/* PDF */
+async function compressPDF() {
+  const f = document.getElementById("pdfFile").files[0];
+  const scale = document.getElementById("pdfScale").value / 100;
+  const s = document.getElementById("pdfStatus");
+  const btn = document.getElementById("pdfBtn");
+  
+  if (!f) {
+    s.innerText = "❌ Please select a PDF file first.";
+    s.className = "status error";
+    return;
+  }
+
+  s.innerHTML = '<span class="spinner"></span>Optimizing PDF...';
+  s.className = "status loading";
+  btn.disabled = true;
+  btn.innerHTML = "Processing...";
+
+  try {
+    const inKB = (f.size / 1024).toFixed(0);
+    const bytes = await f.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+
+    pdf.getPages().forEach(p => {
+      const { width, height } = p.getSize();
+      p.scaleContent(scale, scale);
+      p.setSize(width * scale, height * scale);
+    });
+
+    const out = await pdf.save({ useObjectStreams: true });
+    const outKB = (out.byteLength / 1024).toFixed(0);
+    download(new Blob([out], { type: "application/pdf" }), "compressed.pdf");
+    s.innerHTML = `✅ Done! ${inKB}KB → ${outKB}KB (Saved ${((inKB - outKB) / inKB * 100).toFixed(0)}%)`;
+    s.className = "status success";
+    btn.disabled = false;
+    btn.innerHTML = "Compress PDF ✨";
+  } catch (error) {
+    s.innerText = "❌ Error compressing PDF. Please try again.";
+    s.className = "status error";
+    btn.disabled = false;
+    btn.innerHTML = "Compress PDF ✨";
+  }
+}
+
+function download(blob, name) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+}
+</script>
+
+</body>
+</html>

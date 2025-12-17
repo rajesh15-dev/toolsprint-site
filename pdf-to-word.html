@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF to Word Converter – ToolSprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== RESET & BASE ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+  background:#f5f7fb;
+  color:#0f172a;
+}
+
+/* ===== TOP NAV (ENTERPRISE STYLE) ===== */
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter: blur(14px);
+  border-bottom:1px solid #e5e7eb;
+}
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:.3px;
+}
+.brand span{color:#2563eb}
+.nav-tag{
+  font-size:13px;
+  color:#64748b;
+}
+
+/* ===== PAGE WRAP ===== */
+.wrapper{
+  max-width:1200px;
+  margin:60px auto;
+  padding:0 24px;
+}
+
+/* ===== MAIN CARD ===== */
+.card{
+  background:#ffffff;
+  border-radius:28px;
+  padding:60px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:48px;
+  box-shadow:0 40px 80px rgba(15,23,42,.12);
+}
+@media(max-width:900px){
+  .card{grid-template-columns:1fr;padding:36px}
+}
+
+/* ===== LEFT ===== */
+.left h1{
+  font-size:38px;
+  line-height:1.2;
+  margin-bottom:16px;
+}
+.left p{
+  font-size:16px;
+  color:#475569;
+  line-height:1.7;
+  max-width:520px;
+}
+.cta{
+  margin-top:32px;
+  padding:18px 46px;
+  font-size:16px;
+  border-radius:999px;
+  border:none;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 20px 40px rgba(37,99,235,.45);
+  transition:.25s ease;
+}
+.cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 30px 60px rgba(37,99,235,.55);
+}
+
+/* ===== RIGHT – PDF → WORD DEMO ===== */
+.preview{
+  background:#f1f5f9;
+  border-radius:22px;
+  padding:26px;
+}
+.preview-box{
+  position:relative;
+  height:240px;
+  border-radius:18px;
+  background:#ffffff;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* PDF ICON */
+.pdf{
+  width:90px;
+  height:120px;
+  background:#ef4444;
+  border-radius:8px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+  box-shadow:0 10px 30px rgba(239,68,68,.4);
+}
+
+/* ARROW */
+.arrow{
+  margin:0 18px;
+  font-size:28px;
+  color:#64748b;
+  animation:move 1.6s infinite;
+}
+@keyframes move{
+  0%{transform:translateX(0);opacity:.3}
+  50%{transform:translateX(8px);opacity:1}
+  100%{transform:translateX(0);opacity:.3}
+}
+
+/* WORD ICON */
+.word{
+  width:90px;
+  height:120px;
+  background:#2563eb;
+  border-radius:8px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+  box-shadow:0 10px 30px rgba(37,99,235,.45);
+}
+
+.preview-note{
+  margin-top:18px;
+  font-size:14px;
+  color:#64748b;
+}
+
+/* ===== PROCESS OVERLAY ===== */
+.process{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#ffffff;
+  z-index:9999;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+.process-inner{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.spinner{
+  width:84px;
+  height:84px;
+  border:3px solid #e5e7eb;
+  border-top:3px solid #2563eb;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 32px;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.process h2{
+  font-size:22px;
+  font-weight:600;
+}
+.process p{
+  margin-top:12px;
+  color:#64748b;
+  font-size:15px;
+  line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP NAV -->
+<div class="navbar">
+  <div class="nav-inner">
+    <div class="brand">Tool<span>Sprint</span></div>
+    <div class="nav-tag">PDF to Word Converter</div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+      <h1>Convert PDF to Word</h1>
+      <p>
+        Convert PDF documents into fully editable Word files using
+        a guided professional workflow. Layout and text preserved.
+      </p>
+
+      <button class="cta" onclick="startPDF()">
+        Convert PDF to Word
+      </button>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="preview">
+      <div class="preview-box">
+        <div class="pdf">PDF</div>
+        <div class="arrow">➜</div>
+        <div class="word">WORD</div>
+      </div>
+      <div class="preview-note">
+        Layout preserved • Editable text • Fast conversion
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- PROCESS -->
+<div class="process" id="process">
+  <div class="process-inner">
+    <div class="spinner"></div>
+    <h2>Preparing PDF Conversion</h2>
+    <p>
+      Analysing document structure…<br>
+      Extracting text & layout…<br>
+      Opening conversion workspace…
+    </p>
+  </div>
+</div>
+
+<script>
+function startPDF(){
+  const p=document.getElementById("process");
+  p.style.display="block";
+  requestAnimationFrame(()=>{p.style.opacity="1"});
+
+  // smooth instant same-tab redirect
+  setTimeout(()=>{
+    window.location.href="https://www.ilovepdf.com/pdf_to_word";
+  },200);
+}
+</script>
+
+</body>
+</html>
