@@ -165,15 +165,34 @@ a{text-decoration:none;color:inherit}
   border-radius:50%;
 }
 
+/* FOOTER END GRADIENT */
+.footer-wrap{
+  background:linear-gradient(
+    to bottom,
+    rgba(246,248,252,0) 0%,
+    #f6f8fc 40%,
+    #ffffff 100%
+  );
+  padding-top:60px;
+}
+
 /* FOOTER */
 footer{
-  padding:30px 18px;
+  background:#ffffff;
+  border-top:1px solid #e5e7eb;
+  padding:28px 18px;
   text-align:center;
   font-size:14px;
   color:#64748b;
-  background:#f8fafc;
 }
-footer a{color:#2563eb;font-weight:600}
+footer a{
+  color:#2563eb;
+  font-weight:600;
+  text-decoration:none;
+}
+footer a:hover{
+  text-decoration:underline;
+}
 
 /* PC UPI POPUP */
 #upiPopup{
@@ -316,5 +335,6 @@ function closeUPI(){
 
 </body>
 </html>
+
 
 
